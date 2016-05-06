@@ -5,7 +5,6 @@
  */
 package Dao;
 
-import Dao.IbaseDatos;
 import Vo.Equipo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -65,7 +64,7 @@ public class EquipoDao implements IbaseDatos<Equipo>{
 	    st.close();
 	    
 	    } catch (SQLException e) {
-			System.out.println("Problemas al obtener la lista de Departamentos");
+			System.out.println("Problemas al obtener la lista de equipos");
 			e.printStackTrace();
 		}
 	    
@@ -113,6 +112,8 @@ public class EquipoDao implements IbaseDatos<Equipo>{
 		    }
 			    
 		} catch (SQLException e) {
+                    
+			System.out.println("Problemas al insertar un equipo");
 				e.printStackTrace();
 		}
 			
@@ -130,6 +131,8 @@ public class EquipoDao implements IbaseDatos<Equipo>{
 		     preparedStmt.setInt(1, t.getId_Equipo());
 		    result= preparedStmt.execute();
 		} catch (SQLException e) {
+                    
+			System.out.println("Problemas al borrar un equipo");
 			e.printStackTrace();
 		}
 	   
@@ -138,50 +141,48 @@ public class EquipoDao implements IbaseDatos<Equipo>{
 
     @Override
     public Equipo Buscar(String s) {
-        Equipo equipo = new Equipo();
-     	    String query = "SELECT * FROM equipo where nombre_equipo=?";
+       Equipo equipo=new Equipo();
+       
+	    String query = "SELECT * FROM equipo where nombre_Equipo="+s+";";
 	    Connection connection = Dao.conexion.getConnection();
 	    try {
 	    Statement st = connection.createStatement();
 	    ResultSet rs = st.executeQuery(query);
-	    int id =0;
-	    String nombre = null;
-            String referencia=null;
-            String modelo=null;
-            int cantidad=0;
-            String categoria=null;
+	    int id;
+	    String nombre;
+            String referencia;
+            String modelo;
+            int cantidad;
+            String categoria;
 	    if (rs.next()){
-	    	
-	        Equipo registro= new Equipo();
-                
+	    	                    
 	        id = rs.getInt("id_Equipo");
-	        registro.setId_Equipo(id);
+	        equipo.setId_Equipo(id);
 	        
 	        nombre= rs.getString("nombre_Equipo");
-                registro.setNombre_Equipo(nombre);
+                equipo.setNombre_Equipo(nombre);
                 
                 modelo=rs.getString("modelo_Equipo");
-                registro.setModelo_Equipo(modelo);
+                equipo.setModelo_Equipo(modelo);
                 
                 referencia= rs.getString("referencia_Equipo");
-                registro.setReferencia_Equipo(referencia);
+                equipo.setReferencia_Equipo(referencia);
                 
                cantidad=rs.getInt("cantidad_Equipo");
-                registro.setCantidad_Equipo(cantidad);
+                equipo.setCantidad_Equipo(cantidad);
                 
                 categoria= rs.getString("categoria_equipo");
-                registro.setPrograma_Equipo(categoria);
-            
+                equipo.setPrograma_Equipo(categoria);
+         
 	    }
 	    st.close();
 	    
 	    } catch (SQLException e) {
-			System.out.println("Problemas ");
+			System.out.println("Problemas al buscar un equipo");
 			e.printStackTrace();
 		}
 	    
-        return equipo;
+	    return equipo;
     }
-
     
 }
